@@ -53,7 +53,7 @@ function say(msg) {
 }
 
 function fml(msg) {
-    const url = 'https://www.fmylife.com/random';
+    const url = 'https://www.fmylife.com/tops/top_day';
     fetch(url)
         .then(response => {
             response.text().then(html => {
