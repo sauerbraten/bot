@@ -2,6 +2,12 @@ const Discord = require('discord.js')
 const fetch = require("node-fetch");
 const HTMLParser = require('node-html-parser')
 
+const token = process.env.DISCORD_TOKEN
+if (token == undefined) {
+    console.log('Provide a discord bot token as DISCORD_TOKEN!')
+    return
+}
+
 const bot = new Discord.Client();
 
 bot.on('ready', () => {
@@ -34,7 +40,7 @@ bot.on('message', msg => {
     }
 });
 
-bot.login('XXX')
+bot.login(token)
 
 // command implementations
 
