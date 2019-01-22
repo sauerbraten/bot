@@ -80,13 +80,14 @@ function whois(msg) {
         .then(response => {
             response.json().then(json => {
                 let uniques = json.results
-                    .map(r => r.name)                                 // extract name from each result
+                    .map(r => Discord.escapeMarkdown(r.name))         // extract name from each result
                     .filter((v, i, names) => names.indexOf(v) === i)  // discard duplicates (= keep uniques)
                     .slice(0, 5)                                      // max. 5 results
+                const query = Discord.escapeMarkdown(json.query)
                 if (uniques.length === 0) {
-                    msg.channel.send(`I could not find any results for *${json.query}*! ${noResultsEmoji()}`)
+                    msg.channel.send(`I could not find any results for *${query}*! ${noResultsEmoji()}`)
                 } else {
-                    msg.channel.send(`Results for *${json.query}*: ${uniques.join(', ')}. More at: ${url}`)
+                    msg.channel.send(`Results for *${query}*: ${uniques.join(', ')}. More at: ${url}`)
                 }
             })
         })
