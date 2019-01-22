@@ -25,7 +25,7 @@ bot.on('message', msg => {
     }
 });
 
-bot.login('NTM3MDMzNDkxNTQwNjA2OTg3.DyfXqw.Ion1UImn28-JBEjGj5_CcWMthp4')
+bot.login('XXX')
 
 // command implementations
 
