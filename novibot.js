@@ -14,6 +14,7 @@ bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
 });
 
+
 bot.on('message', msg => {
     if (msg.author.bot) {
         // do not react to bot messages (including this bot's own messages)
@@ -28,6 +29,9 @@ bot.on('message', msg => {
         case '!say':
             say(msg)
             break
+        case '!vengavenga':
+            vengavenga(msg)
+            break
         case '!fml':
             fml(msg)
             break
@@ -35,7 +39,7 @@ bot.on('message', msg => {
             whois(msg)
             break
         case '!help':
-            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!say <any text> - makes the bot say the given text\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org')
+            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!say <any text> - makes the bot say the given text\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org\n!vengavenga - Let me show you something!')
             break
     }
 });
@@ -43,6 +47,10 @@ bot.on('message', msg => {
 bot.login(token)
 
 // command implementations
+
+function vengavenga(msg) {
+    msg.reply('https://youtu.be/MT7dbmV_-ek?t=16')
+}
 
 function pong(msg) {
     msg.reply('pong! :ping_pong:')
