@@ -10,6 +10,10 @@ if (token == undefined) {
 
 const bot = new Discord.Client();
 
+//embedColors
+
+const embedRed = 0xff0000
+
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
 });
@@ -32,6 +36,9 @@ bot.on('message', msg => {
         case '!vengavenga':
             vengavenga(msg)
             break
+        case '!slap':
+            slap(msg)
+            break
         case '!fml':
             fml(msg)
             break
@@ -39,7 +46,7 @@ bot.on('message', msg => {
             whois(msg)
             break
         case '!help':
-            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!say <any text> - makes the bot say the given text\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org\n!vengavenga - Let me show you something!')
+            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!say <any text> - makes the bot say the given text\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org\n!vengavenga - Let me show you something!\n!slap - Slap a mate')
             break
     }
 });
@@ -47,6 +54,13 @@ bot.on('message', msg => {
 bot.login(token)
 
 // command implementations
+
+function slap(msg) {
+    if (msg.mentions.users.size !== 1) 
+        msg.reply('No user or multiple users mentioned')
+    const victim = msg.mentions.users.first()
+    msg.channel.send(`@${msg.author.username} slaps @${victim.username} around a bit with a large trout!`)
+}
 
 function vengavenga(msg) {
     msg.reply('https://youtu.be/MT7dbmV_-ek?t=16')
