@@ -29,6 +29,9 @@ bot.on('message', msg => {
         case '!vengavenga':
             vengavenga(msg)
             break
+        case '!abfahrt':
+            abfahrt(msg)
+            break
         case '!slap':
             slap(msg)
             break
@@ -39,7 +42,7 @@ bot.on('message', msg => {
             whois(msg)
             break
         case '!help':
-            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!say <any text> - makes the bot say the given text\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org\n!vengavenga - Let me show you something!\n!slap - Slap a mate')
+            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org\n!vengavenga - Let me show you something!\n!abfahrt - Let me show you something!\n!slap - Slap a mate')
             break
     }
 });
@@ -57,6 +60,10 @@ function slap(msg) {
 
 function vengavenga(msg) {
     msg.reply('https://youtu.be/MT7dbmV_-ek?t=16')
+}
+
+function abfahrt(msg) {
+    msg.reply('https://www.youtube.com/watch?v=bfVK9z7BlUM')    
 }
 
 function pong(msg) {
