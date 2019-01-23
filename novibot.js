@@ -10,10 +10,6 @@ if (token == undefined) {
 
 const bot = new Discord.Client();
 
-//embedColors
-
-const embedRed = 0xff0000
-
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
 });
