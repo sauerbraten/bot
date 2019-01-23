@@ -26,9 +26,6 @@ bot.on('message', msg => {
         case '!ping':
             pong(msg)
             break
-        case '!say':
-            say(msg)
-            break
         case '!vengavenga':
             vengavenga(msg)
             break
@@ -64,10 +61,6 @@ function vengavenga(msg) {
 
 function pong(msg) {
     msg.reply('pong! :ping_pong:')
-}
-
-function say(msg) {
-    msg.channel.send('I say: ' + msg.content.substr(5))
 }
 
 function fml(msg) {
