@@ -54,10 +54,10 @@ bot.login(token)
 function slap(msg) {
     switch (msg.mentions.users.size) {
         case 0:
-            msg.channel.send(`${msg.author} flops around a bit like a large trout!`)
+            msg.channel.send(`${msg.author} flops around a bit like a large trout!`, new Discord.RichEmbed().setImage(flopGIF()))
             break
         case 1:
-            msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout! :fish::sweat_drops:`)
+            msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`, new Discord.RichEmbed().setImage(slapGIF()))
             break
         default:
             msg.reply('one at a time, please!')
@@ -158,4 +158,47 @@ const noResultsEmoji = () => pick([
     ':cry:',
     ':sob:',
     ':no_mouth:'
+])
+
+const slapGIF = () => pick([
+    'https://media1.tenor.com/images/089a3adeec46220ead9879ba0b2e4703/tenor.gif',
+    'https://media1.tenor.com/images/bdab32a7f54cd76ad132242bdcbad632/tenor.gif',
+    'https://media1.tenor.com/images/7cff4fbe930bf280320f2e94978e2a94/tenor.gif',
+    'https://media1.tenor.com/images/29cb608d5818c0bef2b7856a24f4c7f8/tenor.gif',
+    'https://media1.tenor.com/images/3d791718475c30c00b665ac64b3ebaa4/tenor.gif',
+    'https://media1.tenor.com/images/6480ef9483acd7c11f7fbd9bf3564391/tenor.gif',
+    'https://media1.tenor.com/images/5d7c8fd4025eb5c62d7d1076287ba9ae/tenor.gif',
+    'https://media1.tenor.com/images/be29fa0f5084551c36d0d5975cf6bf0a/tenor.gif',
+    'https://media.tenor.com/images/a3664bd5936a6b49a8657449cdaba463/tenor.gif',
+    'https://media1.tenor.com/images/312b5192fb1e4f5f03b4ab845212f83d/tenor.gif',
+    'https://media1.tenor.com/images/6984543808009c6e289c903a5b661674/tenor.gif',
+    'https://media.giphy.com/media/mEtSQlxqBtWWA/giphy.gif',
+    'https://media.giphy.com/media/O3ao5CGUL7FK0/giphy.gif',
+    'https://media.giphy.com/media/QVYiiemqUEe9q/giphy.gif',
+    'https://media.giphy.com/media/j3iGKfXRKlLqw/giphy-downsized.gif',
+    'https://media.giphy.com/media/UHLtCLwRsbDFK/giphy-downsized.gif',
+    'https://media.giphy.com/media/3XlEk2RxPS1m8/giphy.gif',
+    'https://media.giphy.com/media/1zgOyLCRxCmV5G3GFZ/giphy.gif',
+    'https://media.giphy.com/media/uG3lKkAuh53wc/giphy.gif',
+    'https://media.giphy.com/media/Blsb9lFTZr54s/giphy.gif',
+    'https://media.giphy.com/media/l2SpSQLpViJk9vhmg/giphy.gif',
+    'https://media.giphy.com/media/q8AiNhQJVyDoQ/giphy.gif',
+    'https://media.giphy.com/media/l0MYthTiOGtg1zsT6/giphy.gif',
+    'https://media.giphy.com/media/3oEdv1Rdmo0Vd0YdW0/giphy.gif'
+])
+
+const flopGIF = () => pick([
+    'https://media.giphy.com/media/irU9BlmqEwZwc/giphy.gif',
+    'https://media.giphy.com/media/3oEdv1Rdmo0Vd0YdW0/giphy.gif',
+    'https://media.giphy.com/media/xUPGcnzWmq70t1oJ8I/giphy.gif',
+    'https://media.giphy.com/media/vqNDninByDpU4/giphy.gif',
+    'https://media.giphy.com/media/3WvdC5etwu52rLUAWm/giphy.gif',
+    'https://media.giphy.com/media/26FPnj46RYsIWgYLe/giphy.gif',
+    'https://media.giphy.com/media/a57Xed7DfAkDe/giphy.gif',
+    'https://media.giphy.com/media/pSJmEIjCeKmWI/giphy.gif',
+    'https://media.giphy.com/media/sRe0TGUMzmqNW/giphy.gif',
+    'https://media.giphy.com/media/3ohjUNypcf1MNkM7rW/giphy.gif',
+    'https://media.giphy.com/media/3NWNbk6Ja391S/giphy.gif',
+    'https://media.giphy.com/media/1LmU5cGjBR1pC/giphy.gif',
+    'https://media.giphy.com/media/k9hKQMscB8DZe/giphy.gif'
 ])
