@@ -60,10 +60,12 @@ bot.login(token)
 // command implementations
 
 function slap(msg) {
-    if (msg.mentions.users.size !== 1)
+    if (msg.mentions.users.size !== 1) {
         msg.reply('No user or multiple users mentioned')
+        return
+    }
     const victim = msg.mentions.users.first()
-    msg.channel.send(`@${msg.author.username} slaps @${victim.username} around a bit with a large trout!`)
+    msg.channel.send(`${msg.author} slaps ${victim} around a bit with a large trout!`)
 }
 
 function vengavenga(msg) {
