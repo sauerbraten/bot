@@ -21,7 +21,7 @@ bot.on('message', msg => {
         return;
     }
 
-    const cmd = msg.content.split(' ')[0]
+    const cmd = msg.content.split(' ')[0].toLowerCase();
     switch (cmd) {
         case '!ping':
             pong(msg)
@@ -52,7 +52,7 @@ bot.login(token)
 // command implementations
 
 function slap(msg) {
-    if (msg.mentions.users.size !== 1) 
+    if (msg.mentions.users.size !== 1)
         msg.reply('No user or multiple users mentioned')
     const victim = msg.mentions.users.first()
     msg.channel.send(`@${msg.author.username} slaps @${victim.username} around a bit with a large trout!`)
@@ -63,7 +63,7 @@ function vengavenga(msg) {
 }
 
 function abfahrt(msg) {
-    msg.reply('https://www.youtube.com/watch?v=bfVK9z7BlUM')    
+    msg.reply('https://www.youtube.com/watch?v=bfVK9z7BlUM')
 }
 
 function pong(msg) {
