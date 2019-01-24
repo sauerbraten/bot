@@ -2,6 +2,22 @@ const Discord = require('discord.js')
 const fetch = require("node-fetch");
 const HTMLParser = require('node-html-parser')
 
+
+/* commands set-up */
+
+const commands = {
+    '!ping': makeCmd(ping, 'makes the bot reply with a pong'),
+    '!vengavenga': makeCmd(vengavenga, 'let me show you something!'),
+    '!abfahrt': makeCmd(abfahrt, 'let me show you something!'),
+    '!slap': makeCmd(slap, 'slap a mate'),
+    '!fml': makeCmd(fml, 'gives you a random post from fmylife.com'),
+    '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
+    '!help': makeCmd(help, 'shows this help text')
+}
+
+
+/* actual bot stuff */
+
 const token = process.env.DISCORD_TOKEN
 if (token == undefined) {
     console.log('Provide a discord bot token as DISCORD_TOKEN!')
@@ -14,58 +30,34 @@ bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
 });
 
-
 bot.on('message', msg => {
     if (msg.author.bot) {
         // do not react to bot messages (including this bot's own messages)
-        return;
+        return
     }
 
-    const cmd = msg.content.split(' ')[0].toLowerCase();
-    switch (cmd) {
-        case '!ping':
-            pong(msg)
-            break
-        case '!vengavenga':
-            vengavenga(msg)
-            break
-        case '!abfahrt':
-            abfahrt(msg)
-            break
-        case '!slap':
-            slap(msg)
-            break
-        case '!fml':
-            fml(msg)
-            break
-        case '!whois':
-            whois(msg)
-            break
-        case '!help':
-            msg.channel.send(
-                'Available commands:\n' +
-                '!ping - makes the bot reply with a pong\n' +
-                '!fml - fetch a random post from fmylife.com\n' +
-                '!whois <name> - looks up the name at chef.sauerworld.org\n' +
-                '!vengavenga - Let me show you something!\n' +
-                '!abfahrt - Let me show you something!\n' +
-                '!slap - Slap a mate'
-            )
-            break
+    const cmd = commands[msg.content.split(' ')[0].toLowerCase()]
+    if (cmd === undefined) {
+        // if there is no command matching the first message token, do nothing
+        return
     }
+
+    // execute function implementing the command
+    cmd.f(msg)
 });
 
 bot.login(token)
 
-// command implementations
+
+/* command implementations */
 
 function slap(msg) {
     switch (msg.mentions.users.size) {
         case 0:
-        msg.channel.send(`${msg.author} flops around a bit like a large trout!`)
+            msg.channel.send(`${msg.author} flops around a bit like a large trout!`)
             break
         case 1:
-        msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`)
+            msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`)
             break
         default:
             msg.reply('one at a time, please!')
@@ -81,7 +73,7 @@ function abfahrt(msg) {
     msg.reply('https://www.youtube.com/watch?v=bfVK9z7BlUM')
 }
 
-function pong(msg) {
+function ping(msg) {
     msg.reply('pong! :ping_pong:')
 }
 
@@ -130,8 +122,28 @@ function whois(msg) {
         });
 }
 
-// utility functions
+function help(msg) {
+    msg.channel.send(
+        'Available commands:\n' +
+        Object.entries(commands)                 // convert commands object to array of key-value pairs, e.g. [ ['!ping', {f: ping, desc: '...'}], ['!fml', {f: fml, desc: '...'}] ]
+            .map(c => `${c[0]} - ${c[1].desc}`)  // from each key-value pair, generate a string like this '<key> - <desc field from value>' (key is first element in key-value pair array, value is second)
+            .join('\n')                          // join all the strings by putting newlines inbetween them
+    )
+}
 
+
+/* utility functions */
+
+// takes a command implementation and a description string and
+// returns an object, e.g. {f: ping, desc: '...'}
+function makeCmd(f, desc) {
+    return {
+        f: f,      // the function implementing the command
+        desc: desc // a description (used for help text)
+    }
+}
+
+// randomly picks one element from arr and returns it
 const pick = arr => arr[Math.floor(Math.random() * arr.length)]
 
 const noResultsEmoji = () => pick([
