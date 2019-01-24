@@ -42,7 +42,15 @@ bot.on('message', msg => {
             whois(msg)
             break
         case '!help':
-            msg.channel.send('Available commands:\n!ping - makes the bot reply with a pong\n!fml - fetch a random post from fmylife.com\n!whois <name> - looks up the name at chef.sauerworld.org\n!vengavenga - Let me show you something!\n!abfahrt - Let me show you something!\n!slap - Slap a mate')
+            msg.channel.send(
+                'Available commands:\n'+
+                '!ping - makes the bot reply with a pong\n'+
+                '!fml - fetch a random post from fmylife.com\n'+
+                '!whois <name> - looks up the name at chef.sauerworld.org\n'+
+                '!vengavenga - Let me show you something!\n'+
+                '!abfahrt - Let me show you something!\n'+
+                '!slap - Slap a mate'
+            )
             break
     }
 });
