@@ -60,7 +60,6 @@ bot.login(token)
 // command implementations
 
 function slap(msg) {
-    let victim
     switch (msg.mentions.users.size) {
         case 0:
         msg.channel.send(`${msg.author} flops around a bit like a large trout!`)
