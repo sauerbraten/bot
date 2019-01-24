@@ -43,12 +43,12 @@ bot.on('message', msg => {
             break
         case '!help':
             msg.channel.send(
-                'Available commands:\n'+
-                '!ping - makes the bot reply with a pong\n'+
-                '!fml - fetch a random post from fmylife.com\n'+
-                '!whois <name> - looks up the name at chef.sauerworld.org\n'+
-                '!vengavenga - Let me show you something!\n'+
-                '!abfahrt - Let me show you something!\n'+
+                'Available commands:\n' +
+                '!ping - makes the bot reply with a pong\n' +
+                '!fml - fetch a random post from fmylife.com\n' +
+                '!whois <name> - looks up the name at chef.sauerworld.org\n' +
+                '!vengavenga - Let me show you something!\n' +
+                '!abfahrt - Let me show you something!\n' +
                 '!slap - Slap a mate'
             )
             break
@@ -60,12 +60,18 @@ bot.login(token)
 // command implementations
 
 function slap(msg) {
-    if (msg.mentions.users.size !== 1) {
-        msg.reply('No user or multiple users mentioned')
-        return
+    let victim
+    switch (msg.mentions.users.size) {
+        case 0:
+        msg.channel.send(`${msg.author} flops around a bit like a large trout!`)
+            break
+        case 1:
+        msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`)
+            break
+        default:
+            msg.reply('one at a time, please!')
+            return
     }
-    const victim = msg.mentions.users.first()
-    msg.channel.send(`${msg.author} slaps ${victim} around a bit with a large trout!`)
 }
 
 function vengavenga(msg) {
