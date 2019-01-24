@@ -57,7 +57,7 @@ function slap(msg) {
             msg.channel.send(`${msg.author} flops around a bit like a large trout!`)
             break
         case 1:
-            msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`)
+            msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout! :fish::sweat_drops:`)
             break
         default:
             msg.reply('one at a time, please!')
