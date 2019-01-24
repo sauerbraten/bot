@@ -184,14 +184,14 @@ const slapGIF = () => pick([
     'https://media.giphy.com/media/l2SpSQLpViJk9vhmg/giphy.gif',
     'https://media.giphy.com/media/q8AiNhQJVyDoQ/giphy.gif',
     'https://media.giphy.com/media/l0MYthTiOGtg1zsT6/giphy.gif',
-    'https://media.giphy.com/media/3oEdv1Rdmo0Vd0YdW0/giphy.gif'
-    'https://media.giphy.com/media/bGnQmK38QoSg8/giphy.gif'
-    'https://media.giphy.com/media/s5zXKfeXaa6ZO/giphy.gif'
-    'https://media.giphy.com/media/siS34ziU0gxsQ/giphy.gif'
-    'https://media.giphy.com/media/8TpEwyNgVypZm/giphy.gif'
-    'https://media.giphy.com/media/3o7TKPlA0hb9Oj2SqY/giphy.gif'
-    'https://media.giphy.com/media/nq0qLlrcdahiw/giphy.gif'
-    'https://media.giphy.com/media/1125FQpCo6Ubhm/giphy.gif'
+    'https://media.giphy.com/media/3oEdv1Rdmo0Vd0YdW0/giphy.gif',
+    'https://media.giphy.com/media/bGnQmK38QoSg8/giphy.gif',
+    'https://media.giphy.com/media/s5zXKfeXaa6ZO/giphy.gif',
+    'https://media.giphy.com/media/siS34ziU0gxsQ/giphy.gif',
+    'https://media.giphy.com/media/8TpEwyNgVypZm/giphy.gif',
+    'https://media.giphy.com/media/3o7TKPlA0hb9Oj2SqY/giphy.gif',
+    'https://media.giphy.com/media/nq0qLlrcdahiw/giphy.gif',
+    'https://media.giphy.com/media/1125FQpCo6Ubhm/giphy.gif',
     'https://media.giphy.com/media/DctClOfWhv1uw/giphy.gif'
 ])
 
