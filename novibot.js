@@ -172,6 +172,9 @@ const slapGIF = () => pick([
     'https://media.tenor.com/images/a3664bd5936a6b49a8657449cdaba463/tenor.gif',
     'https://media1.tenor.com/images/312b5192fb1e4f5f03b4ab845212f83d/tenor.gif',
     'https://media1.tenor.com/images/6984543808009c6e289c903a5b661674/tenor.gif',
+    'https://media1.tenor.com/images/a0ffacb83345fd02e0f5031c089fa9ec/tenor.gif,
+    'https://media1.tenor.com/images/4d2163ca3f69e9a7dbd8f7b61bad493c/tenor.gif,
+    'https://media1.tenor.com/images/07826ba9b2374136d44beccbae3af90d/tenor.gif,
     'https://media.giphy.com/media/mEtSQlxqBtWWA/giphy.gif',
     'https://media.giphy.com/media/O3ao5CGUL7FK0/giphy.gif',
     'https://media.giphy.com/media/QVYiiemqUEe9q/giphy.gif',
@@ -192,7 +195,13 @@ const slapGIF = () => pick([
     'https://media.giphy.com/media/3o7TKPlA0hb9Oj2SqY/giphy.gif',
     'https://media.giphy.com/media/nq0qLlrcdahiw/giphy.gif',
     'https://media.giphy.com/media/1125FQpCo6Ubhm/giphy.gif',
-    'https://media.giphy.com/media/DctClOfWhv1uw/giphy.gif'
+    'https://media.giphy.com/media/DctClOfWhv1uw/giphy.gif',
+    'https://media.giphy.com/media/TyedlhnUI6aNG/giphy.gif
+    'https://media.giphy.com/media/6dKnzQvvgpevK/giphy.gif,
+    'https://media.giphy.com/media/XY6F8Aiy4biPS/giphy.gif,
+    'https://media.giphy.com/media/GZVzBH1DnYOjK/giphy.gif,
+    'https://media.giphy.com/media/iIPI1tpT9HcUE/giphy.gif,
+    'https://media.giphy.com/media/PijznUhLmW56mJqfe6/giphy.gif 
 ])
 
 const flopGIF = () => pick([
