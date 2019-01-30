@@ -175,34 +175,7 @@ const noResultsEmoji = () => pick([
     ':no_mouth:'
 ])
 
-const sexyGIF = () => pick([
-    'https://media.giphy.com/media/cwHQOWenYfnQA/giphy.gif',
-    'https://media.giphy.com/media/12WgrmWEDsKN7q/giphy.gif',
-    'https://media.giphy.com/media/Pd67q39KIdy4E/giphy.gif',
-    'https://media.giphy.com/media/lWP8BbzlC0WS4/giphy.gif',
-    'https://media1.giphy.com/media/fBjm5CS40P1ra/giphy.gif'
-])
-
-const bangGIF = () => pick([
-    'https://media1.tenor.com/images/cd6f458e203391c7c252bf0ce26476e4/tenor.gif',
-    'https://media1.tenor.com/images/20da4935cdcac150717674b42c0e59b5/tenor.gif',
-    'https://media1.tenor.com/images/fbba4cf24d2653cd0a86128baae60912/tenor.gif',
-    'https://media1.tenor.com/images/32fd80acd1244459e704224cd359cc29/tenor.gif',
-    'https://media1.tenor.com/images/246e5593679a3b30da8463965a6c1909/tenor.gif',
-    'https://media1.tenor.com/images/0bb66ac9020a7498bc3be6839b99e4ec/tenor.gif',
-    'https://media1.tenor.com/images/639b646417ac2fb1c131d606e692386e/tenor.gif',
-    'https://media1.tenor.com/images/7b9ba26420ca0a3a65abb40d84894ea9/tenor.gif',
-    'https://media1.tenor.com/images/ddecb500718a7dd81d1eefd1e46e3622/tenor.gif',
-    'https://media1.tenor.com/images/854e74a01996351925dc3028803dadd7/tenor.gif',
-    'https://media1.tenor.com/images/5a48b6a80d7025faa88a1f971def3b2e/tenor.gif',
-    'https://media.giphy.com/media/yms4CB47nHnos/giphy.gif',
-    'https://media.giphy.com/media/3o6Zt0IkvJwtFwWVjO/giphy.gif',
-    'https://media.giphy.com/media/dImKd0zOtAqCQ/giphy.gif',
-    'https://media.giphy.com/media/JBb9ldSXVkwF2/giphy.gif',
-    'https://media.giphy.com/media/mu0jJS92IvvEc/giphy.gif',
-    'https://media.giphy.com/media/EAbBeY9sDZhPq/giphy.gif',
-    'https://media.giphy.com/media/11Eg4iRnkb4JkA/giphy.gif'
-])
+/* GIF implementations */
 
 const slapGIF = () => pick([
     'https://media1.tenor.com/images/089a3adeec46220ead9879ba0b2e4703/tenor.gif',
@@ -268,4 +241,33 @@ const flopGIF = () => pick([
     'https://media.giphy.com/media/3NWNbk6Ja391S/giphy.gif',
     'https://media.giphy.com/media/1LmU5cGjBR1pC/giphy.gif',
     'https://media.giphy.com/media/k9hKQMscB8DZe/giphy.gif'
+])
+
+const bangGIF = () => pick([
+    'https://media1.tenor.com/images/cd6f458e203391c7c252bf0ce26476e4/tenor.gif',
+    'https://media1.tenor.com/images/20da4935cdcac150717674b42c0e59b5/tenor.gif',
+    'https://media1.tenor.com/images/fbba4cf24d2653cd0a86128baae60912/tenor.gif',
+    'https://media1.tenor.com/images/32fd80acd1244459e704224cd359cc29/tenor.gif',
+    'https://media1.tenor.com/images/246e5593679a3b30da8463965a6c1909/tenor.gif',
+    'https://media1.tenor.com/images/0bb66ac9020a7498bc3be6839b99e4ec/tenor.gif',
+    'https://media1.tenor.com/images/639b646417ac2fb1c131d606e692386e/tenor.gif',
+    'https://media1.tenor.com/images/7b9ba26420ca0a3a65abb40d84894ea9/tenor.gif',
+    'https://media1.tenor.com/images/ddecb500718a7dd81d1eefd1e46e3622/tenor.gif',
+    'https://media1.tenor.com/images/854e74a01996351925dc3028803dadd7/tenor.gif',
+    'https://media1.tenor.com/images/5a48b6a80d7025faa88a1f971def3b2e/tenor.gif',
+    'https://media.giphy.com/media/yms4CB47nHnos/giphy.gif',
+    'https://media.giphy.com/media/3o6Zt0IkvJwtFwWVjO/giphy.gif',
+    'https://media.giphy.com/media/dImKd0zOtAqCQ/giphy.gif',
+    'https://media.giphy.com/media/JBb9ldSXVkwF2/giphy.gif',
+    'https://media.giphy.com/media/mu0jJS92IvvEc/giphy.gif',
+    'https://media.giphy.com/media/EAbBeY9sDZhPq/giphy.gif',
+    'https://media.giphy.com/media/11Eg4iRnkb4JkA/giphy.gif'
+])
+
+const sexyGIF = () => pick([
+    'https://media.giphy.com/media/cwHQOWenYfnQA/giphy.gif',
+    'https://media.giphy.com/media/12WgrmWEDsKN7q/giphy.gif',
+    'https://media.giphy.com/media/Pd67q39KIdy4E/giphy.gif',
+    'https://media.giphy.com/media/lWP8BbzlC0WS4/giphy.gif',
+    'https://media1.giphy.com/media/fBjm5CS40P1ra/giphy.gif'
 ])
