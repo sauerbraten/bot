@@ -12,6 +12,7 @@ const commands = {
     '!slap': makeCmd(slap, 'slap a mate'),
     '!fml': makeCmd(fml, 'gives you a random post from fmylife.com'),
     '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
+    '!sex': makeCmd(sex, 'makes you probably wet'),
     '!help': makeCmd(help, 'shows this help text')
 }
 
@@ -63,6 +64,10 @@ function slap(msg) {
             msg.reply('one at a time, please!')
             return
     }
+}
+
+function sex(msg) {
+    msg.channel.send(`${msg.author} wants to have some sexy time! :smirk:` , new Discord.RichEmbed().setImage(sexGIF()))  
 }
 
 function vengavenga(msg) {
@@ -158,6 +163,14 @@ const noResultsEmoji = () => pick([
     ':cry:',
     ':sob:',
     ':no_mouth:'
+])
+
+const sexGIF = ()  => pick([
+    'https://media.giphy.com/media/cwHQOWenYfnQA/giphy.gif',
+    'https://media.giphy.com/media/12WgrmWEDsKN7q/giphy.gif',
+    'https://media.giphy.com/media/Pd67q39KIdy4E/giphy.gif',
+    'https://media.giphy.com/media/lWP8BbzlC0WS4/giphy.gif',
+    'https://media1.giphy.com/media/fBjm5CS40P1ra/giphy.gif'
 ])
 
 const slapGIF = () => pick([
