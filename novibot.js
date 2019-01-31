@@ -12,7 +12,7 @@ const commands = {
     '!slap': makeCmd(slap, 'slap a mate'),
     '!fml': makeCmd(fml, 'gives you a random post from fmylife.com'),
     '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
-    '!sex': makeCmd(sex, 'makes you probably wet'),
+    '!sex': makeCmd(sex, 'probably makes you wet', true),
     '!help': makeCmd(help, 'shows this help text')
 }
 
@@ -43,7 +43,12 @@ bot.on('message', msg => {
         return
     }
 
-    // execute function implementing the command
+    if (!cmdAllowed(msg.channel, cmd)) {
+        // don't react to private commands in public channels
+        return
+    }
+
+    // execute the function implementing the command
     cmd.f(msg)
 });
 
@@ -70,14 +75,14 @@ function sex(msg) {
     switch (msg.mentions.users.size) {
         case 0:
             msg.channel.send(`${msg.author} wants to have some sexy time! :smirk:`, new Discord.RichEmbed().setImage(sexyGIF()))
-            break  
+            break
         case 1:
             msg.channel.send(`${msg.author} wants to bang ${msg.mentions.users.first()} :eggplant: :peach:`, new Discord.RichEmbed().setImage(bangGIF()))
             break
         default:
             msg.reply('Several at once? Keep cool, playboy.')
             return
-    }   
+    }
 }
 
 function vengavenga(msg) {
@@ -140,9 +145,10 @@ function whois(msg) {
 function help(msg) {
     msg.channel.send(
         'Available commands:\n' +
-        Object.entries(commands)                 // convert commands object to array of key-value pairs, e.g. [ ['!ping', {f: ping, desc: '...'}], ['!fml', {f: fml, desc: '...'}] ]
-            .map(c => `${c[0]} - ${c[1].desc}`)  // from each key-value pair, generate a string like this '<key> - <desc field from value>' (key is first element in key-value pair array, value is second)
-            .join('\n')                          // join all the strings by putting newlines inbetween them
+        Object.entries(commands)                         // convert commands object to array of key-value pairs, e.g. [ ['!ping', {f: ping, desc: '...'}], ['!fml', {f: fml, desc: '...'}] ]
+            .filter(c => cmdAllowed(msg.channel, c[1]))  // when the !help command came from a public channel, filter out the private commands (otherwise let all commands through the filter)
+            .map(c => `${c[0]} - ${c[1].desc}`)          // from each key-value pair, generate a string like this '<key> - <desc field from value>' (key is first element in key-value pair array, value is second)
+            .join('\n')                                  // join all the strings by putting newlines inbetween them
     )
 }
 
@@ -151,12 +157,31 @@ function help(msg) {
 
 // takes a command implementation and a description string and
 // returns an object, e.g. {f: ping, desc: '...'}
-function makeCmd(f, desc) {
+function makeCmd(f, desc, private = false) {
     return {
-        f: f,      // the function implementing the command
-        desc: desc // a description (used for help text)
+        f: f,             // the function implementing the command
+        desc: desc,       // a description (used for help text)
+        private: private, // wether or not this command is available in public channels
     }
 }
+
+// returns true when channel is not a DM channel and not in the predefined set of private channels
+function isPublic(ch) {
+    if (ch instanceof Discord.DMChannel) {
+        // DM chats are never public
+        return false
+    }
+
+    return !(
+        [
+            '536858354404818945', // #test
+            '192712817957273600'  // #novi-intern
+        ].includes(ch.id)
+    )
+}
+
+// returns false if the command is not allowed in the given channel
+const cmdAllowed = (ch, cmd) => isPublic(ch) ? !cmd.private : true
 
 // randomly picks one element from arr and returns it
 const pick = arr => arr[Math.floor(Math.random() * arr.length)]
@@ -224,7 +249,7 @@ const slapGIF = () => pick([
     'https://media.giphy.com/media/XY6F8Aiy4biPS/giphy.gif',
     'https://media.giphy.com/media/GZVzBH1DnYOjK/giphy.gif',
     'https://media.giphy.com/media/iIPI1tpT9HcUE/giphy.gif',
-    'https://media.giphy.com/media/PijznUhLmW56mJqfe6/giphy.gif' 
+    'https://media.giphy.com/media/PijznUhLmW56mJqfe6/giphy.gif'
 ])
 
 const flopGIF = () => pick([
