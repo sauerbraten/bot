@@ -13,7 +13,8 @@ const commands = {
     '!fml': makeCmd(fml, 'gives you a random post from fmylife.com'),
     '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
     '!sex': makeCmd(sex, 'probably makes you wet', true),
-    '!help': makeCmd(help, 'shows this help text')
+    '!help': makeCmd(help, 'shows this help text'),
+    '!rev': makeCmd(revision, 'show git revision of this bot instance')
 }
 
 
@@ -152,6 +153,10 @@ function help(msg) {
     )
 }
 
+
+function revision(msg) {
+    msg.reply("I'm running revision <filled in by CI service>")
+}
 
 /* utility functions */
 
