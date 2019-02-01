@@ -295,6 +295,7 @@ const bangGIF = () => pick([
 ])
 
 const sexyGIF = () => pick([
+    'https://media1.tenor.com/images/97b3be2e37b1a3baa4b4c60796e54f25/tenor.gif',
     'https://media.giphy.com/media/cwHQOWenYfnQA/giphy.gif',
     'https://media.giphy.com/media/12WgrmWEDsKN7q/giphy.gif',
     'https://media.giphy.com/media/Pd67q39KIdy4E/giphy.gif',
