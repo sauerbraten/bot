@@ -155,7 +155,7 @@ function help(msg) {
 
 
 function revision(msg) {
-    msg.reply("I'm running revision <filled in by CI service>")
+    msg.reply(`I'm running revision https://github.com/sauerbraten/bot/commit/<filled in by CI service>`)
 }
 
 /* utility functions */
