@@ -1,5 +1,7 @@
 # noVI bot
 
+[![builds.sr.ht status](https://builds.sr.ht/~sauerbraten/bot.svg)](https://builds.sr.ht/~sauerbraten/bot?)
+
 ## Run
 
 To start the bot, use (on Windows):
