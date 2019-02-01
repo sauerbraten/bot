@@ -295,6 +295,12 @@ const bangGIF = () => pick([
 ])
 
 const sexyGIF = () => pick([
+    'https://media1.tenor.com/images/08a71da82af77f2404dfe405e6be7889/tenor.gif',
+    'https://media1.tenor.com/images/5e5a9c679db88d5df7b409451dbfe4a0/tenor.gif',
+    'https://media1.tenor.com/images/34bd68ba1f7aa6fe10e56bc78d4c0b31/tenor.gif',
+    'https://media1.tenor.com/images/a4aa5d4dc10686f1a83c23326ecbcd94/tenor.gif',
+    'https://media1.tenor.com/images/b2e30fc7505e52edef137add329bd626/tenor.gif',
+    'https://media1.tenor.com/images/9382b1a54b103c22cb3d125bca8254dd/tenor.gif',
     'https://media.giphy.com/media/5SkxEmZq6EyKQ/200w.gif',
     'https://media.giphy.com/media/cwHQOWenYfnQA/giphy.gif',
     'https://media.giphy.com/media/12WgrmWEDsKN7q/giphy.gif',
