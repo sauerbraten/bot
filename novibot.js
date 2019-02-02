@@ -156,7 +156,7 @@ function help(msg) {
 }
 
 function revision(msg) {
-    msg.reply(`I'm running revision ${git.hash} :tools:`, gitEmbed)
+    msg.reply(`I'm running revision ${git.hash}. :tools:`, gitEmbed)
 }
 
 /* utility functions */
