@@ -30,6 +30,8 @@ const bot = new Discord.Client();
 
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
+    // notify #novi-intern about restart
+    bot.channels.get('192712817957273600').send(`On to a fresh start with revision ${git.hash}! :rocket:`, gitEmbed)
 });
 
 bot.on('message', msg => {
@@ -153,9 +155,8 @@ function help(msg) {
     )
 }
 
-
 function revision(msg) {
-    msg.reply(`I'm running revision https://github.com/sauerbraten/bot/commit/<filled in by CI service>`)
+    msg.reply(`I'm running revision ${git.hash} :tools:`, gitEmbed)
 }
 
 /* utility functions */
@@ -307,3 +308,16 @@ const sexyGIF = () => pick([
     'https://media.giphy.com/media/lWP8BbzlC0WS4/giphy.gif',
     'https://media1.giphy.com/media/fBjm5CS40P1ra/giphy.gif'
 ])
+
+const git = {
+    hash: '<<hash>>',
+    author: '<<author>>',
+    subject: '<<subject>>'
+}
+
+const gitEmbed = new Discord.RichEmbed()
+    .setAuthor(git.author)
+    .setTitle(git.subject)
+    .setDescription(`[sauerbraten/bot](https://github.com/sauerbraten/bot)`)
+    .setURL(`https://github.com/sauerbraten/bot/commit/${git.hash}`)
+    //.setThumbnail('https://i.imgur.com/1KOip7T.png')

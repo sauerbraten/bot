@@ -12,7 +12,9 @@ secrets:
 tasks:
   - version: |
       cd bot
-      sed -i "s/<filled in by CI service>/$(git rev-parse --short HEAD)/" novibot.js
+      sed -i "s/<<hash>>/$(git rev-parse --short HEAD)/" novibot.js
+      sed -i "s/<<author>>/$(git show -s --format=%an)/" novibot.js
+      sed -i "s/<<subject>>/$(git show -s --format=%s)/" novibot.js
   - dependencies: |
       cd bot
       npm install
