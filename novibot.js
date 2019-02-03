@@ -260,7 +260,6 @@ const slapGIF = () => pick([
 
 const flopGIF = () => pick([
     'https://media.giphy.com/media/irU9BlmqEwZwc/giphy.gif',
-    'https://media.giphy.com/media/3oEdv1Rdmo0Vd0YdW0/giphy.gif',
     'https://media.giphy.com/media/xUPGcnzWmq70t1oJ8I/giphy.gif',
     'https://media.giphy.com/media/vqNDninByDpU4/giphy.gif',
     'https://media.giphy.com/media/3WvdC5etwu52rLUAWm/giphy.gif',
