@@ -124,9 +124,10 @@ function whois(msg) {
         msg.reply('please provide exactly one name! Example: !whois player1')
         return
     }
-    // '!whois' is the first element, our query is the second
+    // parts[0] is the '!whois', our query is parts[1]
     const url = `https://chef.sauerworld.org/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
-    fetch(`${url}&format=json`)
+    const apiURL = `https://chef.sauerworld.org/api/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
+    fetch(apiURL)
         .then(response => {
             response.json().then(json => {
                 let uniques = json.results
@@ -143,7 +144,7 @@ function whois(msg) {
         })
         .catch(err => {
             console.log(err)
-            msg.reply(`I couldn't fetch ${url}!`)
+            msg.reply(`I couldn't fetch ${apiURL}!`)
         })
 }
 
