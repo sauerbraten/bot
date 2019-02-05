@@ -311,9 +311,9 @@ const sexyGIF = () => pick([
 ])
 
 const git = {
-    hash: '<<hash>>',
-    author: '<<author>>',
-    subject: '<<subject>>'
+    hash: `<<hash>>`,
+    author: `<<author>>`,
+    subject: `<<subject>>`
 }
 
 const gitEmbed = new Discord.RichEmbed()
