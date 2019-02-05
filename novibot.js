@@ -1,27 +1,29 @@
 const Discord = require('discord.js')
 const fetch = require("node-fetch")
 const HTMLParser = require('node-html-parser')
+const WebSocket = require('ws');
 
 
 /* commands set-up */
 
 const commands = {
-    '!ping': makeCmd(ping, 'makes the bot reply with a pong'),
-    '!vengavenga': makeCmd(vengavenga, 'let me show you something!'),
     '!abfahrt': makeCmd(abfahrt, 'let me show you something!'),
-    '!slap': makeCmd(slap, 'slap a mate'),
     '!fml': makeCmd(fml, 'gives you a random post from fmylife.com'),
-    '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
-    '!sex': makeCmd(sex, 'probably makes you wet', true),
     '!help': makeCmd(help, 'shows this help text'),
-    '!rev': makeCmd(revision, 'show git revision of this bot instance')
+    '!ping': makeCmd(ping, 'makes the bot reply with a pong'),
+    '!rev': makeCmd(revision, 'show git revision of this bot instance'),
+    '!sex': makeCmd(sex, 'probably makes you wet', true),
+    '!slap': makeCmd(slap, 'slap a mate'),
+    '!status': makeCmd(status, 'displays the current state of a sauer server'),
+    '!vengavenga': makeCmd(vengavenga, 'let me show you something!'),
+    '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
 }
 
 
 /* actual bot stuff */
 
 const token = process.env.DISCORD_TOKEN
-if (token == undefined) {
+if (!token) {
     console.log('Provide a discord bot token as DISCORD_TOKEN!')
     return
 }
@@ -30,8 +32,10 @@ const bot = new Discord.Client();
 
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
-    // notify #novi-intern about restart
-    bot.channels.get('192712817957273600').send(`On to a fresh start with revision ${git.hash}! :rocket:`, gitEmbed)
+    // notify #novi-intern about restart (but only if the name doesn't indicate a test bot account)
+    if (!bot.user.username.split(' ').some(part => ['alpha', 'beta', 'pre', 'test'].some(word => part.includes(word)))) {
+        bot.channels.get('192712817957273600').send(`On to a fresh start with revision ${git.hash}! :rocket:`, gitEmbed)
+    }
 })
 
 bot.on('message', msg => {
@@ -130,7 +134,7 @@ function whois(msg) {
     fetch(apiURL)
         .then(response => {
             response.json().then(json => {
-                let uniques = json.results
+                const uniques = json.results
                     .map(r => Discord.escapeMarkdown(r.name))         // extract name from each result
                     .filter((v, i, names) => names.indexOf(v) === i)  // discard duplicates (= keep uniques)
                     .slice(0, 5)                                      // max. 5 results
@@ -138,7 +142,7 @@ function whois(msg) {
                 if (uniques.length === 0) {
                     msg.channel.send(`I could not find any results for *${query}*! ${noResultsEmoji()}`)
                 } else {
-                    msg.channel.send(`Results for *${query}*: ${uniques.join(', ')}. More at: ${url}`)
+                    msg.channel.send(`Results for *${query}*: ${uniques.join(', ')}. More at: <${url}>`)
                 }
             })
         })
@@ -161,6 +165,44 @@ function help(msg) {
 function revision(msg) {
     msg.reply(`I'm running revision ${git.hash}. :tools:`, gitEmbed)
 }
+
+function status(msg) {
+    const query = msg.content.slice('!status '.length)
+    const apiURL = `https://chef.sauerworld.org/api/server?q=${encodeURI(query)}`
+    fetch(apiURL)
+        .then(response => {
+            response.json().then(results => {
+                if (results.length == 0) {
+                    msg.channel.send(`I could not find a server named *${query}*!`)
+                    return
+                }
+                const server = results
+                    .filter(s => s.last_seen)                   // discard servers without the 'last_seen' field
+                    .sort((s, t) => s.last_seen < t.last_seen)  // sort by what server was most recently seen
+                    .shift()                                    // we only want one result
+                const wsURL = `wss://extinfo.sauerworld.org/server/${server.ip}:${server.port}`
+                const ws = new WebSocket(wsURL)
+                ws.on('error', err => {
+                    console.log(err)
+                    msg.reply(`I couldn't connect to ${wsURL}!`)
+                })
+                ws.on('message', data => {
+                    ws.close() // we only need one frame
+                    const i = JSON.parse(data).serverinfo
+                    msg.reply(`${i.numberOfClients} player${i.numberOfClients === 1 ? '' : 's'} on ${i.description}, playing ${i.gameMode} on ${i.map} (${formatTimeLeft(i.secsLeft)}, ${i.masterMode}). More at <https://extinfo.sauerworld.org/#${server.ip}:${server.port}>`)
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                msg.reply(`${apiURL} did not return valid JSON!`)
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            msg.reply(`I couldn't fetch ${apiURL}!`)
+        })
+}
+
 
 /* utility functions */
 
@@ -191,6 +233,12 @@ function isPublic(ch) {
 
 // returns false if the command is not allowed in the given channel
 const cmdAllowed = (ch, cmd) => isPublic(ch) ? !cmd.private : true
+
+// formats e.g. 317 as '05:17'
+function formatTimeLeft(seconds) {
+    const pad = i => (i < 10 ? '0' : '') + i
+    return `${pad(Math.floor(seconds / 60))}:${pad(seconds % 60)}`
+}
 
 // randomly picks one element from arr and returns it
 const pick = arr => arr[Math.floor(Math.random() * arr.length)]
