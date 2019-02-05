@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const fetch = require("node-fetch");
+const fetch = require("node-fetch")
 const HTMLParser = require('node-html-parser')
 
 
@@ -32,7 +32,7 @@ bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     // notify #novi-intern about restart
     bot.channels.get('192712817957273600').send(`On to a fresh start with revision ${git.hash}! :rocket:`, gitEmbed)
-});
+})
 
 bot.on('message', msg => {
     if (msg.author.bot) {
@@ -53,7 +53,9 @@ bot.on('message', msg => {
 
     // execute the function implementing the command
     cmd.f(msg)
-});
+})
+
+bot.on('error', console.error)
 
 bot.login(token)
 
@@ -101,7 +103,7 @@ function ping(msg) {
 }
 
 function fml(msg) {
-    const url = 'https://www.fmylife.com/random';
+    const url = 'https://www.fmylife.com/random'
     fetch(url)
         .then(response => {
             response.text().then(html => {
@@ -113,7 +115,7 @@ function fml(msg) {
         .catch(err => {
             console.log(err)
             msg.reply(`I couldn't fetch ${url}!`)
-        });
+        })
 }
 
 function whois(msg) {
@@ -142,7 +144,7 @@ function whois(msg) {
         .catch(err => {
             console.log(err)
             msg.reply(`I couldn't fetch ${url}!`)
-        });
+        })
 }
 
 function help(msg) {
