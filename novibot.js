@@ -89,7 +89,7 @@ function sex(msg) {
             msg.channel.send(`${msg.author} wants to bang ${msg.mentions.users.first()} :eggplant: :peach:`, new Discord.RichEmbed().setImage(bangGIF()))
             break
         default:
-            msg.reply('Several at once? Keep cool, playboy.')
+            msg.reply('several at once? Keep cool, playboy.')
             return
     }
 }
@@ -125,7 +125,7 @@ function fml(msg) {
 function whois(msg) {
     let parts = msg.content.split(' ')
     if (parts.length != 2) {
-        msg.reply('please provide exactly one name! Example: !whois player1')
+        msg.reply('please provide exactly one name, for example: `!whois player1`.')
         return
     }
     // parts[0] is the '!whois', our query is parts[1]
@@ -172,14 +172,14 @@ function status(msg) {
     fetch(apiURL)
         .then(response => {
             response.json().then(results => {
-                if (results.length == 0) {
-                    msg.channel.send(`I could not find a server named *${query}*!`)
-                    return
-                }
                 const server = results
                     .filter(s => s.last_seen)                   // discard servers without the 'last_seen' field
                     .sort((s, t) => s.last_seen < t.last_seen)  // sort by what server was most recently seen
                     .shift()                                    // we only want one result
+                if (!server) {
+                    msg.reply(`I could not find a server named *${query}*!`)
+                    return
+                }
                 const wsURL = `wss://extinfo.sauerworld.org/server/${server.ip}:${server.port}`
                 const ws = new WebSocket(wsURL)
                 ws.on('error', err => {
@@ -190,7 +190,7 @@ function status(msg) {
                     ws.close() // we only need one frame
                     const i = JSON.parse(data).serverinfo
                     const singular = i.numberOfClients === 1
-                    msg.reply(`there ${singular ? 'is' : 'are'} ${i.numberOfClients} player${singular ? '' : 's'} on ${i.description}, playing ${i.gameMode} on ${i.map} with ${formatTimeLeft(i.secsLeft)} left (${i.masterMode}). More at <https://extinfo.sauerworld.org/#${server.ip}:${server.port}>`)
+                    msg.channel.send(`there ${singular ? 'is' : 'are'} ${i.numberOfClients} player${singular ? '' : 's'} on ${i.description}, playing ${i.gameMode} on ${i.map} with ${formatTimeLeft(i.secsLeft)} left (${i.masterMode}). More at <https://extinfo.sauerworld.org/#${server.ip}:${server.port}>`)
                 })
             })
             .catch(err => {
