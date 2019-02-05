@@ -190,7 +190,7 @@ function status(msg) {
                     ws.close() // we only need one frame
                     const i = JSON.parse(data).serverinfo
                     const singular = i.numberOfClients === 1
-                    msg.reply(`there ${singular ? 'is' : 'are'}${i.numberOfClients} player${singular ? '' : 's'} on ${i.description} (${i.masterMode}), playing ${i.gameMode} on ${i.map} with ${formatTimeLeft(i.secsLeft)} left. More at <https://extinfo.sauerworld.org/#${server.ip}:${server.port}>`)
+                    msg.reply(`there ${singular ? 'is' : 'are'} ${i.numberOfClients} player${singular ? '' : 's'} on ${i.description}, playing ${i.gameMode} on ${i.map} with ${formatTimeLeft(i.secsLeft)} left (${i.masterMode}). More at <https://extinfo.sauerworld.org/#${server.ip}:${server.port}>`)
                 })
             })
             .catch(err => {
