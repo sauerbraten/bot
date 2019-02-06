@@ -7,7 +7,7 @@ sources:
 environment:
   DEPLOY: p1x.pw
 secrets:
-  - 98c1b481-b37f-452f-872a-8f8fa1833249
+  - 41a695fb-4229-450d-9aa4-5499f6bcea81
   - 0eb47a86-d098-4756-8fc1-5c570eee8fb8
 tasks:
   - version: |
