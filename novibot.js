@@ -86,8 +86,13 @@ function sex(msg) {
             msg.channel.send(`${msg.author} wants to have some sexy time! :smirk:`, new Discord.RichEmbed().setImage(sexyGIF()))
             break
         case 1:
-            msg.channel.send(`${msg.author} wants to bang ${msg.mentions.users.first()} :eggplant: :peach:`, new Discord.RichEmbed().setImage(bangGIF()))
-            break
+            if (msg.mentions.users.first() == msg.author) {
+                msg.channel.send(`You can not bang yourself, my friend! :eyes:`)
+            }
+            else {
+                msg.channel.send(`${msg.author} wants to bang ${msg.mentions.users.first()} :eggplant: :peach:`, new Discord.RichEmbed().setImage(bangGIF()))
+            }
+            return
         default:
             msg.reply('several at once? Keep cool, playboy.')
             return
