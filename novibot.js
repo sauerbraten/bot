@@ -16,7 +16,7 @@ const commands = {
     '!slap': makeCmd(slap, 'slap a mate'),
     '!status': makeCmd(status, 'displays the current state of a sauer server'),
     '!vengavenga': makeCmd(vengavenga, 'let me show you something!'),
-    '!whois': makeCmd(whois, 'looks up the name at chef.sauerworld.org'),
+    '!whois': makeCmd(whois, 'looks up the name at chef.p1x.pw'),
 }
 
 
