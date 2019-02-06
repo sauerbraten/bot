@@ -172,7 +172,11 @@ function revision(msg) {
 }
 
 function status(msg) {
-    const query = msg.content.slice('!status '.length)
+    const query = msg.content.slice('!status'.length).trim()
+    if (query === '') {
+        msg.reply('I need a server name!')
+        return
+    }
     const apiURL = `https://chef.p1x.pw/api/server?q=${encodeURI(query)}`
     fetch(apiURL)
         .then(response => {
@@ -198,10 +202,10 @@ function status(msg) {
                     msg.channel.send(`There ${singular ? 'is' : 'are'} ${i.numberOfClients} player${singular ? '' : 's'} on ${i.description}, playing ${i.gameMode} on ${i.map} with ${formatTimeLeft(i.secsLeft)} left (${i.masterMode}). More at <https://extinfo.p1x.pw/#${server.ip}:${server.port}>`)
                 })
             })
-            .catch(err => {
-                console.log(err)
-                msg.reply(`${apiURL} did not return valid JSON!`)
-            })
+                .catch(err => {
+                    console.log(err)
+                    msg.reply(`${apiURL} did not return valid JSON!`)
+                })
         })
         .catch(err => {
             console.log(err)
