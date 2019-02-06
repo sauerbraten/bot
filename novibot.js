@@ -72,8 +72,13 @@ function slap(msg) {
             msg.channel.send(`${msg.author} flops around a bit like a large trout!`, new Discord.RichEmbed().setImage(flopGIF()))
             break
         case 1:
-            msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`, new Discord.RichEmbed().setImage(slapGIF()))
-            break
+            if (msg.mentions.users.first() == msg.author) {
+                msg.channel.send(`${msg.author} flops around a bit like a large trout!`, new Discord.RichEmbed().setImage(flopGIF()))
+            }
+            else {
+                msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`, new Discord.RichEmbed().setImage(slapGIF()))
+            }
+            return
         default:
             msg.reply('one at a time, please!')
             return
