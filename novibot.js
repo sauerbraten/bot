@@ -74,8 +74,7 @@ function slap(msg) {
         case 1:
             if (msg.mentions.users.first() == msg.author) {
                 msg.channel.send(`${msg.author} flops around a bit like a large trout!`, new Discord.RichEmbed().setImage(flopGIF()))
-            }
-            else {
+            } else {
                 msg.channel.send(`${msg.author} slaps ${msg.mentions.users.first()} around a bit with a large trout!`, new Discord.RichEmbed().setImage(slapGIF()))
             }
             return
@@ -93,8 +92,7 @@ function sex(msg) {
         case 1:
             if (msg.mentions.users.first() == msg.author) {
                 msg.channel.send(`You can not bang yourself, my friend! :eyes:`)
-            }
-            else {
+            } else {
                 msg.channel.send(`${msg.author} wants to bang ${msg.mentions.users.first()} :eggplant: :peach:`, new Discord.RichEmbed().setImage(bangGIF()))
             }
             return
