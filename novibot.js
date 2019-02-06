@@ -134,8 +134,8 @@ function whois(msg) {
         return
     }
     // parts[0] is the '!whois', our query is parts[1]
-    const url = `https://chef.sauerworld.org/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
-    const apiURL = `https://chef.sauerworld.org/api/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
+    const url = `https://chef.p1x.pw/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
+    const apiURL = `https://chef.p1x.pw/api/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
     fetch(apiURL)
         .then(response => {
             response.json().then(json => {
@@ -173,7 +173,7 @@ function revision(msg) {
 
 function status(msg) {
     const query = msg.content.slice('!status '.length)
-    const apiURL = `https://chef.sauerworld.org/api/server?q=${encodeURI(query)}`
+    const apiURL = `https://chef.p1x.pw/api/server?q=${encodeURI(query)}`
     fetch(apiURL)
         .then(response => {
             response.json().then(results => {
@@ -185,7 +185,7 @@ function status(msg) {
                     msg.reply(`I could not find a server named *${query}*!`)
                     return
                 }
-                const wsURL = `wss://extinfo.sauerworld.org/server/${server.ip}:${server.port}`
+                const wsURL = `wss://extinfo.p1x.pw/server/${server.ip}:${server.port}`
                 const ws = new WebSocket(wsURL)
                 ws.on('error', err => {
                     console.log(err)
