@@ -373,7 +373,21 @@ const sexyGIF = () => pick([
     'https://media.giphy.com/media/12WgrmWEDsKN7q/giphy.gif',
     'https://media.giphy.com/media/Pd67q39KIdy4E/giphy.gif',
     'https://media.giphy.com/media/lWP8BbzlC0WS4/giphy.gif',
-    'https://media1.giphy.com/media/fBjm5CS40P1ra/giphy.gif'
+    'https://media1.giphy.com/media/fBjm5CS40P1ra/giphy.gif',
+    'https://media.giphy.com/media/mwAEs7loF7xqo/giphy.gif',
+    'https://media.giphy.com/media/1266sbyhJZwgyk/giphy.gif',
+    'https://media.giphy.com/media/10xs6XIt0Yy5Nu/giphy.gif',
+    'https://media.giphy.com/media/O6G4pe7P5ZVCw/giphy.gif',
+    'https://media.giphy.com/media/btZOJAcXRSWZi/giphy.gif',
+    'https://media.giphy.com/media/xMbYC7zVHLiKY/giphy.gif',
+    'https://media.giphy.com/media/xuMu0HuHlXiQ8/giphy.gif',
+    'https://media.giphy.com/media/pYRYdnMICWmti/giphy.gif',
+    'https://media.giphy.com/media/kgpuhoz8vW4RW/giphy.gif',
+    'https://media.giphy.com/media/JOXHRcd3Llz5m/giphy.gif',
+    'https://media1.giphy.com/media/upDkg42rRR6Wk/giphy.gif',
+    'https://media.giphy.com/media/6D0dubMvJUtAA/giphy.gif',
+    'https://media.giphy.com/media/NAEMN5qk3pEac/giphy.gif',
+    'https://media.giphy.com/media/UkB4EFWdX9eJq/giphy.gif'
 ])
 
 const git = {
