@@ -243,6 +243,8 @@ function isPublic(ch) {
     return !(
         [
             '536858354404818945', // #test
+            '192650756434690048', // #novi-offtopic
+            '478315034561216512', // #chit-chat
             '192712817957273600'  // #novi-intern
         ].includes(ch.id)
     )
