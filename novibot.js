@@ -136,10 +136,6 @@ function whois(msg) {
         msg.reply('please provide exactly one name, for example: `!whois player1`.')
         return
     }
-    if (msg.author.username === 'Ignis' && parts[1].trim().toLowerCase() === 'ignis') {
-        msg.reply('get over it! :middlefinger:')
-        return
-    }
     // parts[0] is the '!whois', our query is parts[1]
     const url = `https://chef.p1x.pw/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
     const apiURL = `https://chef.p1x.pw/api/lookup?q=${encodeURI(parts[1])}&sorting=name_frequency`
