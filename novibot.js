@@ -11,6 +11,7 @@ const commands = {
     '!fml': makeCmd(fml, 'gives you a random post from fmylife.com'),
     '!help': makeCmd(help, 'shows this help text'),
     '!ping': makeCmd(ping, 'makes the bot reply with a pong'),
+    '!quiz': makeCmd(quiz, 'starts a 15-questions quiz about general knowledge'),
     '!rev': makeCmd(revision, 'show git revision of this bot instance'),
     '!sex': makeCmd(sex, 'probably makes you wet', true),
     '!slap': makeCmd(slap, 'slap a mate'),
@@ -125,7 +126,7 @@ function fml(msg) {
             })
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             msg.reply(`I couldn't fetch ${url}!`)
         })
 }
@@ -155,7 +156,7 @@ function whois(msg) {
             })
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             msg.reply(`I couldn't fetch ${apiURL}!`)
         })
 }
@@ -195,7 +196,7 @@ function status(msg) {
                 const wsURL = `wss://extinfo.p1x.pw/server/${server.ip}:${server.port}`
                 const ws = new WebSocket(wsURL)
                 ws.on('error', err => {
-                    console.log(err)
+                    console.error(err)
                     msg.reply(`I couldn't connect to ${wsURL}!`)
                 })
                 ws.on('message', data => {
@@ -206,13 +207,170 @@ function status(msg) {
                 })
             })
                 .catch(err => {
-                    console.log(err)
+                    console.error(err)
                     msg.reply(`${apiURL} did not return valid JSON!`)
                 })
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             msg.reply(`I couldn't fetch ${apiURL}!`)
+        })
+}
+
+function quiz(msg) {
+    const channel = msg.channel
+    const ranking = {}
+    let question = undefined
+    let askedAt = undefined
+    let hints = []
+    let solution = undefined
+    let answerHandler = undefined
+
+    function ask() {
+        answerHandler = makeAnswerHandler()
+        bot.on('message', answerHandler)
+        channel.send(`Category: **${question.category}**\n${htmlDecode(question.question)} :thinking:`)
+        askedAt = new Date()
+        hints = []
+        solution = undefined
+        const answer = htmlDecode(question.correct_answer)
+        scheduleHints(answer)
+        scheduleSolution(answer)
+    }
+
+    function scheduleHints(answer) {
+        let withoutSpaces = answer.replace(/\s/g, '')
+        const maskRegex = num => `([^\\s]{${num + 1}})[^\\s]{${5 - num}}`
+        const mask = num => `$1${'*'.repeat(5 - num)}`
+        const hint = num => {
+            // pad to length divisible by 6
+            let h = withoutSpaces + '*'.repeat(6 - (withoutSpaces.length % 6))
+            h = h.replace(new RegExp(maskRegex(num), 'ig'), mask(num))
+            let charsBefore = 0
+            const charsBetweenSpaces = answer.split(/\s/).map(s => s.length)
+            for (const gap of charsBetweenSpaces) {
+                h = h.slice(0, charsBefore + gap) + ' ' + h.slice(charsBefore + gap)
+                charsBefore += gap + 1
+            }
+            h = h.slice(0, answer.length)
+            return h
+        }
+
+        for (let num = 0; num < Math.min(5, withoutSpaces.length); num++) {
+            hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * 10000))
+        }
+    }
+
+    function cancelHints() {
+        for (let hint of hints) {
+            clearTimeout(hint);
+        }
+        hints = []
+    }
+
+    function scheduleSolution(answer) {
+        solution = setTimeout(() => {
+            bot.off('message', answerHandler)
+            channel.send(`The answer would have been: *${Discord.escapeMarkdown(answer)}*. :rolling_eyes:`)
+            afterQuestion()
+        }, (hints.length + 1) * 10000)
+    }
+
+    function cancelSolution() {
+        if (solution) {
+            clearTimeout(solution)
+        }
+        solution = undefined
+    }
+
+
+    function htmlDecode(question) {
+        return HTMLParser.parse(`<p>${question}</p>`).text
+    }
+
+    function makeAnswerHandler() {
+        return function (answer) {
+            if (answer.channel != channel) {
+                // discard messages in other channels than where this quiz is played
+                return
+            }
+            if (msg.author.bot) {
+                // do not react to bot messages (including this bot's own messages)
+                return
+            }
+
+            const correctAnswer = new RegExp(
+                question.correct_answer.replace(/\s/, '\\s?'), // make all whitespace optional
+                'ig',                                          // ignore case & match globally
+            )
+            if (!correctAnswer.test(answer.content)) {
+                return
+            }
+            // we have a correct answer!
+            // stop handling answers
+            bot.off('message', answerHandler)
+            // stop hints/solution
+            cancelHints()
+            cancelSolution()
+            if (!ranking[answer.author]) {
+                ranking[answer.author] = 1
+            } else {
+                ranking[answer.author]++
+            }
+            channel.send(`${answer.author} solved after ${((new Date()) - askedAt) / 1000} seconds. :tada:\nThe answer was: *${htmlDecode(question.correct_answer)}*`)
+            afterQuestion()
+        }
+    }
+
+    function afterQuestion() {
+        if (question.next) {
+            question = question.next
+            // after 1 second, show current top 3
+            setTimeout(() => {
+                const top3 = sortedRanking().slice(0, 3)
+                if (!top3.length) {
+                    return
+                }
+                channel.send(`Top ${top3.length == 1 ? 'player' : top3.length}: ${top3.map(r => `${r.name} (${r.points} points)`).join(', ')}`)
+            }, 1000)
+            // after 4 seconds (3 seconds after the top 3), ask the next question
+            setTimeout(ask, 3000)
+        } else {
+            // after 1 second, send final stats
+            setTimeout(() => {
+                channel.send(`Final scores:\n\n${sortedRanking().map(r => `1. ${r.name}: ${r.points} points`).join('\n')}`)
+            }, 1000)
+        }
+    }
+
+    function sortedRanking() {
+        let sorted = []
+        for (let name in ranking) {
+            sorted.push({ name, points: ranking[name] })
+        }
+        sorted.sort((a, b) => b.points - a.points) // sort by points in descending order
+        return sorted
+    }
+
+    fetch('https://opentdb.com/api.php?amount=30&type=multiple')
+        .then(response => {
+            response.json().then(json => {
+                if (!json.results || !json.results.length) {
+                    console.error(json)
+                    msg.reply(`I got an unexpected response from ${url}!`)
+                    return
+                }
+                const questions = json.results
+                    .filter(q => !/which (one)? of (these|the following)/ig.test(q.question)) // remove questions that depend on the possible answers
+                    .slice(0, 15)                                                             // only keep 15 questions
+                // link questions from last to first
+                for (let q of questions) {
+                    q.next = question
+                    question = q
+                }
+                // start at the last question
+                ask()
+            })
         })
 }
 
