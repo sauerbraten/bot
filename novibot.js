@@ -323,7 +323,19 @@ function quiz(msg) {
     }
 
     function afterQuestion() {
-        if (question.next) {
+        let haveWinner = false
+        for (let name in ranking) {
+            if (ranking[name] == 15) {
+                haveWinner = true
+                break
+            }
+        }
+        if (haveWinner || !question.next) {
+            // after 1 second, send final stats
+            setTimeout(() => {
+                channel.send(`Final scores:\n\n${sortedRanking().map((r, i) => `${i + 1}. ${r.name}: ${r.points} ${r.points == 1 ? 'point' : 'points'}`).join('\n')}`)
+            }, 1000)
+        } else {
             question = question.next
             // after 1 second, show current top 3
             setTimeout(() => {
@@ -335,11 +347,6 @@ function quiz(msg) {
             }, 1000)
             // after 4 seconds (3 seconds after the top 3), ask the next question
             setTimeout(ask, 3000)
-        } else {
-            // after 1 second, send final stats
-            setTimeout(() => {
-                channel.send(`Final scores:\n\n${sortedRanking().map((r, i) => `${i + 1}. ${r.name}: ${r.points} points`).join('\n')}`)
-            }, 1000)
         }
     }
 
@@ -352,7 +359,7 @@ function quiz(msg) {
         return sorted
     }
 
-    fetch('https://opentdb.com/api.php?amount=30&type=multiple')
+    fetch('https://opentdb.com/api.php?amount=40&type=multiple')
         .then(response => {
             response.json().then(json => {
                 if (!json.results || !json.results.length) {
@@ -361,8 +368,8 @@ function quiz(msg) {
                     return
                 }
                 const questions = json.results
-                    .filter(q => !/which (one)? of (these|the following)/ig.test(q.question)) // remove questions that depend on the possible answers
-                    .slice(0, 15)                                                             // only keep 15 questions
+                    .filter(q => !/which( one)? of (these|the following)/ig.test(q.question)) // remove questions that depend on the possible answers
+                    .slice(0, 20)                                                             // only keep 15 questions
                 // link questions from last to first
                 let i = 0
                 for (let q of questions) {
