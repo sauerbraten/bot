@@ -230,7 +230,7 @@ function quiz(msg) {
     function ask() {
         answerHandler = makeAnswerHandler()
         bot.on('message', answerHandler)
-        channel.send(`Question ${question.number} is from category: **${question.category}**\n${htmlDecode(question.question)} :thinking:`)
+        channel.send(`**Question ${question.number}** is from *${question.category}*: ${htmlDecode(question.question)} :thinking:`)
         askedAt = new Date()
         hints = []
         solution = undefined
@@ -344,10 +344,10 @@ function quiz(msg) {
                 if (!top3.length) {
                     return
                 }
-                channel.send(`Top ${top3.length == 1 ? 'player' : top3.length}: ${top3.map(r => `${r.name} (${r.points} points)`).join(', ')}`)
+                channel.send(`Top ${top3.length == 1 ? 'player' : top3.length}: ${top3.map(r => `${r.name} (${r.points} ${r.points == 1 ? 'point' : 'points'})`).join(', ')}`)
             }, 1000)
-            // after 4 seconds (3 seconds after the top 3), ask the next question
-            setTimeout(ask, 3000)
+            // after 11 seconds (10 seconds after the top 3), ask the next question
+            setTimeout(ask, 11000)
         }
     }
 
@@ -369,7 +369,7 @@ function quiz(msg) {
                     return
                 }
                 const questions = json.results
-                    .filter(q => !/which( one)? of (these|the following)/ig.test(q.question)) // remove questions that depend on the possible answers
+                    .filter(q => !/(which one|which of (these|the following))/ig.test(q.question)) // remove questions that depend on the possible answers
                     .slice(0, 20)                                                             // only keep 15 questions
                 // link questions from last to first
                 let i = 20
