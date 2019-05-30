@@ -229,7 +229,7 @@ function quiz(msg) {
     function ask() {
         answerHandler = makeAnswerHandler()
         bot.on('message', answerHandler)
-        channel.send(`Category: **${question.category}**\n${htmlDecode(question.question)} :thinking:`)
+        channel.send(`Question ${question.number} is from category: **${question.category}**\n${htmlDecode(question.question)} :thinking:`)
         askedAt = new Date()
         hints = []
         solution = undefined
@@ -364,9 +364,12 @@ function quiz(msg) {
                     .filter(q => !/which (one)? of (these|the following)/ig.test(q.question)) // remove questions that depend on the possible answers
                     .slice(0, 15)                                                             // only keep 15 questions
                 // link questions from last to first
+                let i = 0
                 for (let q of questions) {
+                    q.number = i + 1
                     q.next = question
                     question = q
+                    i++
                 }
                 // start at the last question
                 ask()
