@@ -257,7 +257,7 @@ function quiz(msg) {
         }
 
         for (let num = 0; num < Math.min(5, withoutSpaces.length); num++) {
-            hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * 10000))
+            hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * 20000))
         }
     }
 
@@ -294,7 +294,7 @@ function quiz(msg) {
                 // discard messages in other channels than where this quiz is played
                 return
             }
-            if (msg.author.bot) {
+            if (answer.author.bot) {
                 // do not react to bot messages (including this bot's own messages)
                 return
             }
@@ -338,7 +338,7 @@ function quiz(msg) {
         } else {
             // after 1 second, send final stats
             setTimeout(() => {
-                channel.send(`Final scores:\n\n${sortedRanking().map(r => `1. ${r.name}: ${r.points} points`).join('\n')}`)
+                channel.send(`Final scores:\n\n${sortedRanking().map((r, i) => `${i + 1}. ${r.name}: ${r.points} points`).join('\n')}`)
             }, 1000)
         }
     }
