@@ -223,6 +223,7 @@ function quiz(msg) {
     let question = undefined
     let askedAt = undefined
     let hints = []
+    const timeBetweenHints = 20000
     let solution = undefined
     let answerHandler = undefined
 
@@ -257,7 +258,7 @@ function quiz(msg) {
         }
 
         for (let num = 0; num < Math.min(5, withoutSpaces.length); num++) {
-            hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * 20000))
+            hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * timeBetweenHints))
         }
     }
 
@@ -273,7 +274,7 @@ function quiz(msg) {
             bot.off('message', answerHandler)
             channel.send(`The answer would have been: *${Discord.escapeMarkdown(answer)}*. :rolling_eyes:`)
             afterQuestion()
-        }, (hints.length + 1) * 10000)
+        }, (hints.length + 1) * timeBetweenHints)
     }
 
     function cancelSolution() {
@@ -371,12 +372,12 @@ function quiz(msg) {
                     .filter(q => !/which( one)? of (these|the following)/ig.test(q.question)) // remove questions that depend on the possible answers
                     .slice(0, 20)                                                             // only keep 15 questions
                 // link questions from last to first
-                let i = 0
+                let i = 20
                 for (let q of questions) {
-                    q.number = i + 1
+                    q.number = i
                     q.next = question
                     question = q
-                    i++
+                    i--
                 }
                 // start at the last question
                 ask()
