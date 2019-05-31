@@ -259,11 +259,9 @@ function quiz(msg) {
         }
 
         const startMask = withoutSpaces.length == 1 ? 0 : 1 // one-character answers get a '*' hint
-        const numMasks = Math.min(withoutSpaces.length, maxHints)
-        let numHint = 1
-        for (let numMask = startMask; numMask < numMasks; numMask++) {
-            hints.push(setTimeout(() => channel.send(`Hint ${numHint}: ${Discord.escapeMarkdown(hint(numMask))}`), numHint * timeBetweenHints))
-            numHint++
+        const numHints = Math.min(withoutSpaces.length, maxHints)
+        for (let numMask = startMask; numMask < numHints; numMask++) {
+            hints.push(setTimeout(() => channel.send(`Hint: \`${hint(numMask)}\``), (hints.length + 1) * timeBetweenHints))
         }
     }
 
