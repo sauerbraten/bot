@@ -241,15 +241,20 @@ function quiz(msg) {
     }
 
     function scheduleHints(answer) {
-        let withoutSpaces = answer.replace(/\s/g, '')
-        const maskRegex = num => `([^\\s]{${num}})[^\\s]{${maxHints - num}}`
-        const mask = num => `$1${'*'.repeat(maxHints - num)}`
+        const wordChars  = /[a-zA-Z0-9äöüß]/g
+        const nonWordChars = /[^a-zA-Z0-9äöüß]/g
+        const alphaNumOnlyAnswer = answer.replace(nonWordChars, '')
+        // pad pads s with 'a' so the amount of matched chars is divisible by maxHints
+        const pad = s => s + 'a'.repeat(maxHints - (s.match(wordChars).length % maxHints))
+        // maskRegex builds a regex that matches maxHints word chars; provides capture groups
+        // for the part that should remain clear text and the part that should be masked with '*'
+        const maskRegex = num => new RegExp(`((${nonWordChars.source}*${wordChars.source}){${num}})((${nonWordChars.source}*${wordChars.source}){${maxHints - num}})`, 'g')
+        // mask pads s, applies mask, then trims s
+        const mask = (s, num) => pad(s).replace(maskRegex(num), (_, clear, __, masked) => `${clear}${masked.replace(wordChars, '*')}`).slice(0, s.length)
         const hint = num => {
-            // pad to length divisible by maxHints
-            let h = withoutSpaces + '*'.repeat(maxHints - (withoutSpaces.length % maxHints))
-            h = h.replace(new RegExp(maskRegex(num), 'ig'), mask(num))
+            let h = mask(alphaNumOnlyAnswer, num)
             let charsBefore = 0
-            const charsBetweenSpaces = answer.split(/\s/).map(s => s.length)
+            const charsBetweenSpaces = answer.split(/[^a-zA-Z0-9äöüß]/).map(s => s.length)
             for (const gap of charsBetweenSpaces) {
                 h = h.slice(0, charsBefore + gap) + ' ' + h.slice(charsBefore + gap)
                 charsBefore += gap + 1
@@ -258,8 +263,8 @@ function quiz(msg) {
             return h
         }
 
-        const startMask = withoutSpaces.length == 1 ? 0 : 1 // one-character answers get a '*' hint
-        const numHints = Math.min(withoutSpaces.length, maxHints)
+        const startMask = alphaNumOnlyAnswer.length == 1 ? 0 : 1 // one-character answers get a '*' hint
+        const numHints = Math.min(alphaNumOnlyAnswer.length, maxHints)
         for (let numMask = startMask; numMask < numHints; numMask++) {
             hints.push(setTimeout(() => channel.send(`Hint: \`${hint(numMask)}\``), (hints.length + 1) * timeBetweenHints))
         }
@@ -331,7 +336,7 @@ function quiz(msg) {
     function afterQuestion() {
         let haveWinner = false
         for (let name in ranking) {
-            if (ranking[name] == 15) {
+            if (ranking[name] == 10) {
                 haveWinner = true
                 break
             }
@@ -365,7 +370,7 @@ function quiz(msg) {
         return sorted
     }
 
-    fetch('https://opentdb.com/api.php?amount=40&type=multiple')
+    fetch('https://opentdb.com/api.php?amount=30&type=multiple')
         .then(response => {
             response.json().then(json => {
                 if (!json.results || !json.results.length) {
@@ -375,9 +380,9 @@ function quiz(msg) {
                 }
                 const questions = json.results
                     .filter(q => !/(which one|which of (these|the following))/ig.test(q.question)) // remove questions that depend on the possible answers
-                    .slice(0, 20)                                                             // only keep 15 questions
+                    .slice(0, 15)                                                                  // only keep 15 questions
                 // link questions from last to first
-                let i = 20
+                let i = 15
                 for (let q of questions) {
                     q.number = i
                     q.next = question
