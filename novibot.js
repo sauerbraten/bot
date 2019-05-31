@@ -223,7 +223,7 @@ function quiz(msg) {
     let question = undefined
     let askedAt = undefined
     let hints = []
-    const timeBetweenHints = 20000
+    const timeBetweenHints = 15000
     let solution = undefined
     let answerHandler = undefined
 
@@ -301,8 +301,10 @@ function quiz(msg) {
             }
 
             const correctAnswer = new RegExp(
-                question.correct_answer.replace(/\s/, '\\s?'), // make all whitespace optional
-                'ig',                                          // ignore case & match globally
+                question.correct_answer
+                    .replace(/\s/, '\\s?')              // whitespace is optional
+                    .replace(/(\D)\W(\D)/, '$1\\W?$2'), // non-word characters (punctuation etc.) are optional (except '.' in numerals)
+                'ig',                                   // ignore case & match globally
             )
             if (!correctAnswer.test(answer.content)) {
                 return
