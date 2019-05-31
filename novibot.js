@@ -318,12 +318,12 @@ function quiz(msg) {
             // stop hints/solution
             cancelHints()
             cancelSolution()
-            if (!ranking[answer.author]) {
-                ranking[answer.author] = 1
+            if (!ranking[answer.author.username]) {
+                ranking[answer.author.username] = 1
             } else {
-                ranking[answer.author]++
+                ranking[answer.author.username]++
             }
-            channel.send(`${answer.author} solved after ${((new Date()) - askedAt) / 1000} seconds. :tada:\nThe answer was: *${htmlDecode(question.correct_answer)}*`)
+            channel.send(`${answer.author.username} solved after ${((new Date()) - askedAt) / 1000} seconds. :tada:\nThe answer was: *${htmlDecode(question.correct_answer)}*`)
             afterQuestion()
         }
     }
@@ -356,7 +356,7 @@ function quiz(msg) {
         }
     }
 
-    function sortedRanking() {
+    const sortedRanking = () => {
         let sorted = []
         for (let name in ranking) {
             sorted.push({ name, points: ranking[name] })
