@@ -241,8 +241,8 @@ function quiz(msg) {
 
     function scheduleHints(answer) {
         let withoutSpaces = answer.replace(/\s/g, '')
-        const maskRegex = num => `([^\\s]{${num + 1}})[^\\s]{${5 - num}}`
-        const mask = num => `$1${'*'.repeat(5 - num)}`
+        const maskRegex = num => `([^\\s]{${num}})[^\\s]{${6 - num}}`
+        const mask = num => `$1${'*'.repeat(6 - num)}`
         const hint = num => {
             // pad to length divisible by 6
             let h = withoutSpaces + '*'.repeat(6 - (withoutSpaces.length % 6))
@@ -257,7 +257,7 @@ function quiz(msg) {
             return h
         }
 
-        for (let num = 0; num < Math.min(5, withoutSpaces.length); num++) {
+        for (let num = 0; num < Math.min(6, withoutSpaces.length); num++) {
             hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * timeBetweenHints))
         }
     }
