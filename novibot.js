@@ -223,6 +223,7 @@ function quiz(msg) {
     let question = undefined
     let askedAt = undefined
     let hints = []
+    const maxHints = 4
     const timeBetweenHints = 15000
     let solution = undefined
     let answerHandler = undefined
@@ -241,11 +242,11 @@ function quiz(msg) {
 
     function scheduleHints(answer) {
         let withoutSpaces = answer.replace(/\s/g, '')
-        const maskRegex = num => `([^\\s]{${num}})[^\\s]{${6 - num}}`
-        const mask = num => `$1${'*'.repeat(6 - num)}`
+        const maskRegex = num => `([^\\s]{${num}})[^\\s]{${maxHints - num}}`
+        const mask = num => `$1${'*'.repeat(maxHints - num)}`
         const hint = num => {
-            // pad to length divisible by 6
-            let h = withoutSpaces + '*'.repeat(6 - (withoutSpaces.length % 6))
+            // pad to length divisible by maxHints
+            let h = withoutSpaces + '*'.repeat(maxHints - (withoutSpaces.length % maxHints))
             h = h.replace(new RegExp(maskRegex(num), 'ig'), mask(num))
             let charsBefore = 0
             const charsBetweenSpaces = answer.split(/\s/).map(s => s.length)
@@ -257,7 +258,7 @@ function quiz(msg) {
             return h
         }
 
-        for (let num = 0; num < Math.min(6, withoutSpaces.length); num++) {
+        for (let num = withoutSpaces.length == 1 ? 0 : 1; num < Math.min(maxHints, withoutSpaces.length); num++) {
             hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * timeBetweenHints))
         }
     }
