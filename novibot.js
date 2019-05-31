@@ -258,8 +258,12 @@ function quiz(msg) {
             return h
         }
 
-        for (let num = withoutSpaces.length == 1 ? 0 : 1; num < Math.min(maxHints, withoutSpaces.length); num++) {
-            hints.push(setTimeout(() => channel.send(`Hint ${num + 1}: ${Discord.escapeMarkdown(hint(num))}`), (num + 1) * timeBetweenHints))
+        const startMask = withoutSpaces.length == 1 ? 0 : 1 // one-character answers get a '*' hint
+        const numMasks = Math.min(withoutSpaces.length, maxHints)
+        let numHint = 1
+        for (let numMask = startMask; numMask < numMasks; numMask++) {
+            hints.push(setTimeout(() => channel.send(`Hint ${numHint}: ${Discord.escapeMarkdown(hint(numMask))}`), numHint * timeBetweenHints))
+            numHint++
         }
     }
 
