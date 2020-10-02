@@ -40,11 +40,14 @@ bot.on("ready", () => {
       )
   ) {
     bot.channels
-      .get("192712817957273600")
-      .send(
-        `On to a fresh start with revision ${git.hash}! :rocket:`,
-        gitEmbed
-      );
+      .fetch("192712817957273600")
+      .then((c) =>
+        c.send(
+          `On to a fresh start with revision ${git.hash}! :rocket:`,
+          gitEmbed
+        )
+      )
+      .catch(console.error);
   }
 });
 
