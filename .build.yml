@@ -1,4 +1,4 @@
-image: alpine/edge
+image: fedora/32
 packages:
   - npm
   - rsync
@@ -7,8 +7,8 @@ sources:
 environment:
   DEPLOY: p1x.pw
 secrets:
-  - 41a695fb-4229-450d-9aa4-5499f6bcea81
-  - 0eb47a86-d098-4756-8fc1-5c570eee8fb8
+  - 956ddc04-c911-4147-bc90-30bb08276c3e # ci@ng.p1x.pw ssh key
+  - 0eb47a86-d098-4756-8fc1-5c570eee8fb8 # discord bot token
 tasks:
   - version: |
       cd bot
