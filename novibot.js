@@ -285,9 +285,7 @@ function quiz(msg) {
     answerHandler = makeAnswerHandler(answer);
     bot.on("message", answerHandler);
     channel.send(
-      `**Question ${question.number}** is from *${
-        question.category
-      }*: ${htmlDecode(question.question)} :thinking:`
+      `#${question.number} - ${question.category}:\n**${htmlDecode(question.question)}**`
     );
     askedAt = new Date();
     hints = [];
@@ -408,9 +406,7 @@ function quiz(msg) {
         ranking[msg.author.username]++;
       }
       channel.send(
-        `${msg.author.username} solved after ${
-          (new Date() - askedAt) / 1000
-        } seconds. :tada:\nThe answer was: *${answer}*`
+        `${msg.author.username} solved after ${(new Date() - askedAt) / 1000} seconds. The answer was: *${answer}*`
       );
       afterQuestion();
     };
@@ -419,7 +415,7 @@ function quiz(msg) {
   function afterQuestion() {
     let haveWinner = false;
     for (let name in ranking) {
-      if (ranking[name] == 10) {
+      if (ranking[name] == 15) {
         haveWinner = true;
         break;
       }
@@ -428,13 +424,8 @@ function quiz(msg) {
       // after 1 second, send final stats
       setTimeout(() => {
         channel.send(
-          `Final scores:\n\n${sortedRanking()
-            .map(
-              (r, i) =>
-                `${i + 1}. ${r.name}: ${r.points} ${
-                  r.points == 1 ? "point" : "points"
-                }`
-            )
+          `Final scores:\n${sortedRanking()
+            .map((r, i) => `${i + 1}. with ${r.points} ${r.points == 1 ? "pt" : "pts"}: ${r.name}`)
             .join("\n")}`
         );
       }, 1000);
@@ -469,7 +460,7 @@ function quiz(msg) {
     return sorted;
   };
 
-  fetch("https://opentdb.com/api.php?amount=30&type=multiple").then(
+  fetch("https://opentdb.com/api.php?amount=50&type=multiple").then(
     (response) => {
       response.json().then((json) => {
         if (!json.results || !json.results.length) {
@@ -481,14 +472,14 @@ function quiz(msg) {
           .filter(
             (q) =>
               !/(which one|which of (these|the following))/gi.test(q.question)
-          ) // remove questions that depend on the possible answers
-          .slice(0, 15); // only keep 15 questions
-        // link questions from last to first
-        let i = 15;
+          ); // remove questions that depend on the possible answers
+        // link questions in reverse order
+        let i = questions.length;
+        let prevQuestion = undefined;
         for (let q of questions) {
           q.number = i;
-          q.next = question;
-          question = q;
+          q.next = prevQuestion;
+          prevQuestion = q;
           i--;
         }
         // start at the last question
