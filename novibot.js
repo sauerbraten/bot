@@ -460,7 +460,7 @@ function quiz(msg) {
     return sorted;
   };
 
-  fetch("https://opentdb.com/api.php?amount=50&type=multiple").then(
+  fetch("https://opentdb.com/api.php?amount=150&type=multiple").then(
     (response) => {
       response.json().then((json) => {
         if (!json.results || !json.results.length) {
@@ -469,10 +469,10 @@ function quiz(msg) {
           return;
         }
         const questions = json.results
-          .filter(
-            (q) =>
-              !/(which one|which of (these|the following))/gi.test(q.question)
-          ); // remove questions that depend on the possible answers
+          // remove questions that depend on the possible answers
+          .filter(q => !/(which one|which of (these|the following))/gi.test(q.question))
+          // remove questions from 'Entertainment: Video Games' and 'Entertainment: Japanese Anime & Manga'
+          .filter(q => !/(video games)|anime/gi.test(q.category));
         // link questions in reverse order
         let i = questions.length;
         let prevQuestion = undefined;
