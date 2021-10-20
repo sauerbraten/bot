@@ -476,11 +476,10 @@ function quiz(msg) {
           .filter(q => !/(video games)|anime/gi.test(q.category));
         // link questions in reverse order
         let i = questions.length;
-        let prevQuestion = undefined;
         for (let q of questions) {
           q.number = i;
-          q.next = prevQuestion;
-          prevQuestion = q;
+          q.next = question;
+          question = q;
           i--;
         }
         // start at the last question
