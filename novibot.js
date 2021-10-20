@@ -388,6 +388,7 @@ function quiz(msg) {
       const correctAnswer = new RegExp(
         answer
           .replace(/\s/, "\\s?") // whitespace is optional
+          .replace(/^\W/, "").replace(/\W$/, "") // trim non-word characters at beginning and end
           .replace(/(\D)\W(\D)/, "$1\\W?$2"), // non-word characters (punctuation etc.) are optional (except '.' in numerals)
         "ig" // ignore case & match globally
       );
