@@ -281,7 +281,8 @@ function quiz(msg) {
   let answerHandler = undefined;
 
   function ask() {
-    answerHandler = makeAnswerHandler();
+    const answer = htmlDecode(question.correct_answer);
+    answerHandler = makeAnswerHandler(answer);
     bot.on("message", answerHandler);
     channel.send(
       `**Question ${question.number}** is from *${
@@ -291,7 +292,6 @@ function quiz(msg) {
     askedAt = new Date();
     hints = [];
     solution = undefined;
-    const answer = htmlDecode(question.correct_answer);
     scheduleHints(answer);
     scheduleSolution(answer);
   }
@@ -359,7 +359,7 @@ function quiz(msg) {
       channel.send(
         `The answer would have been: *${Discord.escapeMarkdown(
           answer
-        )}*. :rolling_eyes:`
+        )}*... :rolling_eyes:`
       );
       afterQuestion();
     }, (hints.length + 1) * timeBetweenHints);
@@ -376,24 +376,24 @@ function quiz(msg) {
     return HTMLParser.parse(`<p>${question}</p>`).text;
   }
 
-  function makeAnswerHandler() {
-    return function (answer) {
-      if (answer.channel != channel) {
+  function makeAnswerHandler(answer) {
+    return function (msg) {
+      if (msg.channel != channel) {
         // discard messages in other channels than where this quiz is played
         return;
       }
-      if (answer.author.bot) {
+      if (msg.author.bot) {
         // do not react to bot messages (including this bot's own messages)
         return;
       }
 
       const correctAnswer = new RegExp(
-        question.correct_answer
+        answer
           .replace(/\s/, "\\s?") // whitespace is optional
           .replace(/(\D)\W(\D)/, "$1\\W?$2"), // non-word characters (punctuation etc.) are optional (except '.' in numerals)
         "ig" // ignore case & match globally
       );
-      if (!correctAnswer.test(answer.content)) {
+      if (!correctAnswer.test(msg.content)) {
         return;
       }
       // we have a correct answer!
@@ -402,17 +402,15 @@ function quiz(msg) {
       // stop hints/solution
       cancelHints();
       cancelSolution();
-      if (!ranking[answer.author.username]) {
-        ranking[answer.author.username] = 1;
+      if (!ranking[msg.author.username]) {
+        ranking[msg.author.username] = 1;
       } else {
-        ranking[answer.author.username]++;
+        ranking[msg.author.username]++;
       }
       channel.send(
-        `${answer.author.username} solved after ${
+        `${msg.author.username} solved after ${
           (new Date() - askedAt) / 1000
-        } seconds. :tada:\nThe answer was: *${htmlDecode(
-          question.correct_answer
-        )}*`
+        } seconds. :tada:\nThe answer was: *${answer}*`
       );
       afterQuestion();
     };
