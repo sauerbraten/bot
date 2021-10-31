@@ -279,13 +279,15 @@ function quiz(msg) {
   const timeBetweenHints = 15000;
   let solution = undefined;
   let answerHandler = undefined;
+  const mandatoryChars = /[\p{L}\p{N}]/gu;
+  const optionalChars = /[^\p{L}\p{N}]/gu;
 
   function ask() {
     const answer = htmlDecode(question.correct_answer);
     answerHandler = makeAnswerHandler(answer);
     bot.on("message", answerHandler);
     channel.send(
-      `#${question.number} - ${question.category}:\n**${htmlDecode(question.question)}**`
+      `#${question.number} - ${question.category}: **${htmlDecode(question.question)}**`
     );
     askedAt = new Date();
     hints = [];
@@ -295,34 +297,31 @@ function quiz(msg) {
   }
 
   function scheduleHints(answer) {
-    const wordChars = /[a-zA-Z0-9äöüß]/g;
-    const nonWordChars = /[^a-zA-Z0-9äöüß]/g;
-    const alphaNumOnlyAnswer = answer.replace(nonWordChars, "");
+    const mandatoryCharsOnly = answer.replace(optionalChars, "");
     // pad pads s with 'a' so the amount of matched chars is divisible by maxHints
-    const pad = (s) =>
-      s + "a".repeat(maxHints - (s.match(wordChars).length % maxHints));
+    const pad = (s) => s + "a".repeat(maxHints - (s.match(mandatoryChars).length % maxHints));
     // maskRegex builds a regex that matches maxHints word chars; provides capture groups
     // for the part that should remain clear text and the part that should be masked with '*'
     const maskRegex = (num) =>
       new RegExp(
-        `((${nonWordChars.source}*${wordChars.source}){${num}})((${
-          nonWordChars.source
-        }*${wordChars.source}){${maxHints - num}})`,
-        "g"
+        `((${optionalChars.source}*${mandatoryChars.source}){${num}})((${
+          optionalChars.source
+        }*${mandatoryChars.source}){${maxHints - num}})`,
+        "gu"
       );
     // mask pads s, applies mask, then trims s
     const mask = (s, num) =>
       pad(s)
         .replace(
           maskRegex(num),
-          (_, clear, __, masked) => `${clear}${masked.replace(wordChars, "*")}`
+          (_, clear, __, masked) => `${clear}${masked.replace(mandatoryChars, "*")}`
         )
         .slice(0, s.length);
     const hint = (num) => {
-      let h = mask(alphaNumOnlyAnswer, num);
+      let h = mask(mandatoryCharsOnly, num);
       let charsBefore = 0;
       const charsBetweenSpaces = answer
-        .split(/[^a-zA-Z0-9äöüß]/)
+        .split(optionalChars)
         .map((s) => s.length);
       for (const gap of charsBetweenSpaces) {
         h = h.slice(0, charsBefore + gap) + " " + h.slice(charsBefore + gap);
@@ -385,13 +384,7 @@ function quiz(msg) {
         return;
       }
 
-      const correctAnswer = new RegExp(
-        answer
-          .replace(/\s/, "\\s?") // whitespace is optional
-          .replace(/^\W/, "").replace(/\W$/, "") // trim non-word characters at beginning and end
-          .replace(/(\D)\W(\D)/, "$1\\W?$2"), // non-word characters (punctuation etc.) are optional (except '.' in numerals)
-        "ig" // ignore case & match globally
-      );
+      const correctAnswer = new RegExp(answer.replace(optionalChars, ".?"), "ig"); // ignore case & match globally
       if (!correctAnswer.test(msg.content)) {
         return;
       }
