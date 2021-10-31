@@ -331,8 +331,8 @@ function quiz(msg) {
       return h;
     };
 
-    const startMask = alphaNumOnlyAnswer.length == 1 ? 0 : 1; // one-character answers get a '*' hint
-    const numHints = Math.min(alphaNumOnlyAnswer.length, maxHints);
+    const startMask = mandatoryCharsOnly.length == 1 ? 0 : 1; // one-character answers get a '*' hint
+    const numHints = Math.min(mandatoryCharsOnly.length, maxHints);
     for (let numMask = startMask; numMask < numHints; numMask++) {
       hints.push(
         setTimeout(
